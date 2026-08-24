@@ -4,57 +4,152 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patch Notes — Video Game Collection Diary</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/silkscreen@latest/latin-400-normal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/silkscreen@latest/latin-700-normal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/outfit@latest/latin-400-normal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/outfit@latest/latin-500-normal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/outfit@latest/latin-600-normal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/outfit@latest/latin-700-normal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/jetbrains-mono@latest/latin-400-normal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/jetbrains-mono@latest/latin-600-normal.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Patch Notes</h1>
-    <p class="subtitle">Your video game collection diary</p>
-  </header>
 
-  <section class="summary" id="summary" aria-label="Status summary"></section>
+<header class="site-head">
+  <div class="hd-in">
+    <div class="brand">
+      <!-- ponytail: inline SVG logo, no external CDN dependency -->
+      <svg class="logo" viewBox="0 0 52 52" aria-label="Game cartridge logo">
+        <rect x="2" y="2" width="48" height="48" rx="6" fill="#0a1638" stroke="#262c52" stroke-width="2"/>
+        <rect x="10" y="8" width="32" height="22" rx="3" fill="#ffd23f"/>
+        <rect x="14" y="12" width="24" height="14" rx="2" fill="#0a1638"/>
+        <path d="M22 18 L26 22 L30 18 L30 26 L22 26 Z" fill="#ff5d73"/>
+        <rect x="18" y="34" width="16" height="10" rx="2" fill="#262c52"/>
+        <rect x="20" y="36" width="3" height="3" fill="#53c8ff"/>
+        <rect x="24.5" y="36" width="3" height="3" fill="#53c8ff"/>
+        <rect x="29" y="36" width="3" height="3" fill="#53c8ff"/>
+      </svg>
+      <div>
+        <h1 class="wordmark">PATCH<span class="accent">NOTES</span><span class="cursor"></span></h1>
+        <p class="tagline">Video game collection diary</p>
+      </div>
+    </div>
+    <div class="hd-right">
+      <span class="save" id="saveBadge"><i class="pdot"></i><span id="saveTxt">LOCAL SAVE</span></span>
+      <span class="day" id="dayBadge">DAY 1</span>
+    </div>
+  </div>
+</header>
 
-  <section class="card form-section">
-    <h2 id="form-title">Add a game</h2>
-    <form id="game-form" autocomplete="off">
-      <input type="hidden" id="game-id">
-      <div class="row">
-        <label>Title<input type="text" id="title" required maxlength="120"></label>
-        <label>Platform<input type="text" id="platform" required maxlength="60" placeholder="Switch, PS5, PC..."></label>
+<section class="hud" aria-label="Collection summary">
+  <div class="hud-in">
+    <div class="chips" id="chips" role="group" aria-label="Filter by status"></div>
+    <div class="meter">
+      <div class="meter-top"><span class="m-lbl">COMPLETION</span><b id="pct">0%</b></div>
+      <div class="bar"><div class="fill" id="fill"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="layout">
+
+  <aside class="form-panel" id="formPanel" aria-label="Game entry form">
+    <button class="panel-close" id="formClose" aria-label="Close form">✕</button>
+    <h2 class="panel-title" id="formTitle">NEW ENTRY</h2>
+    <p class="panel-sub" id="formSub">Log a new title on your shelf</p>
+    <form id="gameForm" novalidate>
+      <label class="field"><span class="lbl">Title *</span>
+        <input type="text" id="fTitle" maxlength="60" placeholder="e.g. Hollow Knight" autocomplete="off">
+        <span class="err-msg" id="titleErr">GIVE THE GAME A TITLE.</span>
+      </label>
+      <label class="field"><span class="lbl">Platform</span>
+        <select id="fPlatform"></select>
+      </label>
+      <div class="field"><span class="lbl">Format</span>
+        <div class="seg" id="segFmt">
+          <label><input type="radio" name="fmt" value="physical" checked><span>▦ PHYSICAL</span></label>
+          <label><input type="radio" name="fmt" value="digital"><span>⇩ DIGITAL</span></label>
+        </div>
       </div>
-      <div class="row">
-        <label>Format
-          <select id="format" required>
-            <option value="physical">Physical</option>
-            <option value="digital">Digital</option>
-          </select>
-        </label>
-        <label>Status
-          <select id="status" required>
-            <option value="not_started">Not Started</option>
-            <option value="in_progress">In Progress</option>
-            <option value="completed">Completed</option>
-            <option value="dropped">Dropped</option>
-          </select>
-        </label>
+      <div class="field"><span class="lbl">Status</span>
+        <div class="seg stat" id="segStat"></div>
       </div>
-      <label>Note<input type="text" id="note" maxlength="200" placeholder="e.g. stuck on the final boss"></label>
+      <label class="field"><span class="lbl">Note <em>(optional)</em></span>
+        <span class="cnt-note" id="noteCnt">0/140</span>
+        <textarea id="fNote" maxlength="140" rows="3" placeholder="stuck on the final boss…"></textarea>
+      </label>
       <div class="form-actions">
-        <button type="submit" id="submit-btn">Add Game</button>
-        <button type="button" id="cancel-btn" hidden>Cancel</button>
+        <button type="submit" class="btn primary" id="submitBtn">+ ADD TO SHELF</button>
+        <button type="button" class="btn ghost" id="cancelBtn" hidden>CANCEL</button>
       </div>
     </form>
-  </section>
+  </aside>
 
-  <section class="card list-section">
-    <div class="list-header">
-      <h2>Collection</h2>
-      <span id="count" class="count-text"></span>
+  <main>
+    <div class="toolbar" id="toolbar">
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="5"/><path d="m11 11 4 4"/></svg>
+        <input type="text" id="searchIn" placeholder="Search titles & notes…" autocomplete="off" aria-label="Search collection">
+      </div>
+      <span class="selwrap"><select id="platFilter" aria-label="Filter by platform"></select></span>
+      <span class="selwrap"><select id="sortSel" aria-label="Sort collection">
+        <option value="newest">NEWEST FIRST</option>
+        <option value="oldest">OLDEST FIRST</option>
+        <option value="title">TITLE A–Z</option>
+      </select></span>
+      <span class="shown" id="shownTxt"></span>
     </div>
-    <ul class="game-list" id="game-list"></ul>
-    <p class="empty" id="empty" hidden>No games yet. Add your first one above.</p>
-  </section>
 
-  <script src="app.js"></script>
+    <div class="cards" id="list"></div>
+
+    <div class="empty" id="emptyAll" hidden>
+      <!-- ponytail: inline SVG empty illustration, no external CDN -->
+      <svg class="empty-art" viewBox="0 0 250 180" aria-label="Empty shelf illustration">
+        <rect x="30" y="140" width="190" height="8" fill="#262c52"/>
+        <rect x="30" y="60" width="190" height="8" fill="#262c52"/>
+        <rect x="40" y="75" width="50" height="65" fill="#1c2140" stroke="#262c52"/>
+        <rect x="40" y="75" width="50" height="8" fill="#ffd23f"/>
+        <rect x="100" y="80" width="80" height="60" fill="#1c2140" stroke="#262c52"/>
+        <rect x="100" y="80" width="80" height="6" fill="#53e08c"/>
+        <rect x="190" y="90" width="30" height="50" fill="#1c2140" stroke="#262c52"/>
+        <rect x="190" y="90" width="30" height="6" fill="#53c8ff"/>
+        <rect x="60" y="20" width="60" height="40" fill="#141830" stroke="#262c52"/>
+        <rect x="60" y="20" width="60" height="4" fill="#ff5d73"/>
+        <line x1="70" y1="35" x2="110" y2="35" stroke="#98a0c3" stroke-width="1"/>
+        <line x1="70" y1="42" x2="100" y2="42" stroke="#6b7399" stroke-width="1"/>
+        <line x1="70" y1="49" x2="105" y2="49" stroke="#6b7399" stroke-width="1"/>
+        <circle cx="180" cy="35" r="8" fill="#ffd23f"/>
+        <circle cx="180" cy="35" r="3" fill="#0a1638"/>
+      </svg>
+      <h2>YOUR SHELF IS EMPTY</h2>
+      <p>Every great backlog starts with a single entry.</p>
+      <div class="row">
+        <button class="btn primary" id="firstAddBtn">+ LOG FIRST GAME</button>
+        <button class="btn ghost" id="samplesBtn">LOAD SAMPLE COLLECTION</button>
+      </div>
+    </div>
+
+    <div class="empty" id="emptyFiltered" hidden>
+      <h3>NO TITLES MATCH</h3>
+      <p>Try another search, or clear your filters.</p>
+      <button class="btn ghost" id="clearBtn">CLEAR FILTERS</button>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="ft-in">
+    <span>PATCH NOTES v1.0 — your save data lives in this browser (localStorage). no cloud, no login.</span>
+    <button class="linkbtn" id="wipeBtn">WIPE SAVE DATA</button>
+  </div>
+</footer>
+
+<button class="fab" id="fab">+ LOG GAME</button>
+<div class="scrim" id="scrim"></div>
+<div class="toast" id="toast" role="status"><span id="toastMsg"></span><button id="toastAct">UNDO</button></div>
+
+<script src="app.js"></script>
 </body>
 </html>
