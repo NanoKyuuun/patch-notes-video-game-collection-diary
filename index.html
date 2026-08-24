@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patch Notes — Video Game Collection Diary</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Patch Notes</h1>
+    <p class="subtitle">Your video game collection diary</p>
+  </header>
+
+  <section class="summary" id="summary" aria-label="Status summary"></section>
+
+  <section class="card form-section">
+    <h2 id="form-title">Add a game</h2>
+    <form id="game-form" autocomplete="off">
+      <input type="hidden" id="game-id">
+      <div class="row">
+        <label>Title<input type="text" id="title" required maxlength="120"></label>
+        <label>Platform<input type="text" id="platform" required maxlength="60" placeholder="Switch, PS5, PC..."></label>
+      </div>
+      <div class="row">
+        <label>Format
+          <select id="format" required>
+            <option value="physical">Physical</option>
+            <option value="digital">Digital</option>
+          </select>
+        </label>
+        <label>Status
+          <select id="status" required>
+            <option value="not_started">Not Started</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+            <option value="dropped">Dropped</option>
+          </select>
+        </label>
+      </div>
+      <label>Note<input type="text" id="note" maxlength="200" placeholder="e.g. stuck on the final boss"></label>
+      <div class="form-actions">
+        <button type="submit" id="submit-btn">Add Game</button>
+        <button type="button" id="cancel-btn" hidden>Cancel</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card list-section">
+    <div class="list-header">
+      <h2>Collection</h2>
+      <span id="count" class="count-text"></span>
+    </div>
+    <ul class="game-list" id="game-list"></ul>
+    <p class="empty" id="empty" hidden>No games yet. Add your first one above.</p>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+:root {
+  --bg: #0f1115;
+  --surface: #181b22;
+  --surface-2: #20242d;
+  --text: #e6e8ec;
+  --muted: #9aa3b2;
+  --border: #2a2f3a;
+  --accent: #7c9cff;
+
+  --not-started: #6b7280;
+  --in-progress: #f59e0b;
+  --completed: #22c55e;
+  --dropped: #ef4444;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --surface-2: #f1f3f8;
+    --text: #1a1d23;
+    --muted: #5b6473;
+    --border: #e2e6ee;
+    --accent: #3b6bff;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  max-width: 880px;
+  margin-inline: auto;
+  padding: 1.5rem 1rem 4rem;
+}
+
+header h1 { margin: 0; font-size: 1.75rem; letter-spacing: -0.02em; }
+.subtitle { margin: 0.25rem 0 1.5rem; color: var(--muted); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Summary */
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.pill .dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+.pill strong { color: var(--text); font-weight: 600; }
+
+/* Form */
+.form-section h2, .list-section h2 {
+  margin: 0 0 1rem;
+  font-size: 1.125rem;
+}
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+@media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+
+form label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+form input, form select {
+  display: block;
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.55rem 0.7rem;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+}
+form input:focus, form select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+button {
+  font: inherit;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+button:hover { filter: brightness(1.1); }
+button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+button.secondary { background: var(--surface-2); color: var(--text); }
+button.danger { background: transparent; color: var(--dropped); border-color: transparent; padding: 0.3rem 0.5rem; }
+button.danger:hover { background: rgba(239, 68, 68, 0.1); }
+
+/* List */
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+.count-text { color: var(--muted); font-size: 0.9rem; }
+
+.game-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.game-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  display: grid;
+  gap: 0.4rem;
+}
+.game-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.game-title { font-weight: 600; font-size: 1.05rem; margin: 0; }
+.game-meta { color: var(--muted); font-size: 0.875rem; }
+.game-note { font-size: 0.9rem; color: var(--text); }
+.game-note:empty { display: none; }
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  color: #fff;
+  white-space: nowrap;
+}
+.badge.not_started { background: var(--not-started); }
+.badge.in_progress { background: var(--in-progress); color: #1a1d23; }
+.badge.completed { background: var(--completed); }
+.badge.dropped { background: var(--dropped); }
+
+.game-actions { display: flex; gap: 0.25rem; }
+
+.empty { color: var(--muted); text-align: center; padding: 1.5rem 0; }
